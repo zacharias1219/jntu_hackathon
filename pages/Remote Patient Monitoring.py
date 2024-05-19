@@ -14,7 +14,7 @@ from pandasai import SmartDataframe
 
 llm = Ollama(model="mixtral")
 
-st.title("Data Analysis with PandasAI")
+st.title("🤒 Remote Patient Monitoring")
 
 uploader_file = st.file_uploader("Upload a CSV file", type= ["csv"])
 
