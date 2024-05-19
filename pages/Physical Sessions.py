@@ -8,7 +8,8 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-st.header("👨‍⚕️ Physical Session")
+st.title("👨‍⚕️ Physical Session")
+
 from streamlit_webrtc import webrtc_streamer, RTCConfiguration
 import av
 import cv2
