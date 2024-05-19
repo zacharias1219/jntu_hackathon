@@ -8,4 +8,4 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-st.header("📜 Insurance Help")
+st.title("📜 Insurance Help")
