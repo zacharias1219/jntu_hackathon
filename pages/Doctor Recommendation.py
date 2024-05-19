@@ -20,6 +20,8 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+st.title("🩺 Doctor Recommendation")
+
 load_dotenv()  #
 
 groq_api_key = os.environ['GROQ_API_KEY']
