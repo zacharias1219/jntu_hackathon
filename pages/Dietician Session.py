@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-st.header("🍎 Dietcian Session")
+st.title("🍎 Dietcian Session")
 from streamlit_webrtc import webrtc_streamer, RTCConfiguration
 import av
 import cv2
