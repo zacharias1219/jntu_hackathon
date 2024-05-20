@@ -12,7 +12,7 @@ from langchain_community.llms import Ollama
 import pandas as pd
 from pandasai import SmartDataframe
 
-llm = Ollama(model="mixtral")
+llm = Ollama(model="llama2")
 
 st.title("🤒 Remote Patient Monitoring")
 

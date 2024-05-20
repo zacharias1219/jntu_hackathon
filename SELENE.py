@@ -7,7 +7,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-st.header("SELĒNE")
+st.header("🏥SELĒNE")
 st.subheader("Problem Statement")
 st.write("Many people suffer with rheumatoid arthritis which is a life long incurable disease, and along with this they suffer with mental health issues that plague their lives and these people can’t find a holistic support for the problems that they face in their lives.")
 
