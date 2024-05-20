@@ -1,59 +1,61 @@
-import streamlit as st
 import os
+import streamlit as st
 from groq import Groq
-from utilities.icon import page_icon
-import random
-
-from langchain.chains import ConversationChain
-from langchain.chains.conversation.memory import ConversationBufferWindowMemory
-from langchain_groq import ChatGroq
-from langchain.prompts import PromptTemplate
-from dotenv import load_dotenv
-import os 
 
 st.set_page_config(
-    page_title="Chat Bot",
+    page_title="CHAT BOT",
     layout="wide",
     page_icon="🤖",
     initial_sidebar_state="collapsed",
 )
 
-import ollama
-
-st.title("🤖 Chat bot")
-
-# initialize history
-if "messages" not in st.session_state:
-    st.session_state["messages"] = []
-
-# init models
-if "model" not in st.session_state:
-    st.session_state["model"] = ""
-
-models = [model["name"] for model in ollama.list()["models"]]
-st.session_state["model"] = st.selectbox("Choose your model", models)
-
-def model_res_generator():
-    stream = ollama.chat(
-        model=st.session_state["model"],
-        messages=st.session_state["messages"],
-        stream=True,
+# Function to get Groq completions
+def get_groq_completions(user_content):
+    client = Groq(
+        api_key=os.environ.get("GROQ_API_KEY"),
     )
-    for chunk in stream:
-        yield chunk["message"]["content"]
 
-# Display chat messages from history on app rerun
-for message in st.session_state["messages"]:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+    completion = client.chat.completions.create(
+        model="mixtral-8x7b-32768",
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a chat bot in an application where the app provides services for people suffering with auto immune diseases like community, diet sessions, doctor reccomendations, insurance help, medicine treatment, physical sessions, remote patient monitoring, therapies. Your job as a chat bot is help people with their questions, guide them to various services and encourage them to live better lives, always stay positive and joyful."
+            },
+            {
+                "role": "user",
+                "content": user_content
+            }
+        ],
+        temperature=0.5,
+        max_tokens=5640,
+        top_p=1,
+        stream=True,
+        stop=None,
+    )
 
-if prompt := st.chat_input("What is up?"):
-    # add latest message to history in format {role, content}
-    st.session_state["messages"].append({"role": "user", "content": prompt})
+    result = ""
+    for chunk in completion:
+        result += chunk.choices[0].delta.content or ""
 
-    with st.chat_message("user"):
-        st.markdown(prompt)
+    return result
 
-    with st.chat_message("assistant"):
-        message = st.write_stream(model_res_generator())
-        st.session_state["messages"].append({"role": "assistant", "content": message})
+# Streamlit interface
+def main():
+    st.title("🤖 CHAT BOT")
+    user_content = st.text_input("Talk to us to clarify your doubts")
+
+    if st.button("Enter"):
+        if not user_content:
+                st.warning("Type something to generate conversation")
+                return
+        st.info("Helping you.")
+        generated_titles = get_groq_completions(user_content)
+        st.success("Here you GO!")
+
+        # Display the generated titles
+        st.markdown("Conversation:")
+        st.text_area("", value=generated_titles, height=200)
+
+if __name__ == "__main__":
+    main()
